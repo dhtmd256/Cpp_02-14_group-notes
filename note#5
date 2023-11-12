@@ -1,0 +1,40 @@
+기능이 중복된 여러개의 클래스가 있다면 중복된 기능을 상속으로 묶어서 간결하게 표연이 가능하다. 1,2,3,4의 기능이중 A는 1,2,3 B는 2,3,4의 기능을 필요로 한다면 2,3을 묶어 1과 상속시키면A, 4에 상속시키면 B로 간결하게 만들수있다.
+업캐스팅과 다운캐스팅.
+업캐스팅은 파생클래스의 객체를 기본클래스의 객체처럼 다룰 수 있게 해준다.  업캐스팅한 기본 클래스의 포인터로는 기본 클래스의 멤버만 접근가능하다.
+다운캐스팅은 기본 클래스r 포인터가 가리키는 객체를 파생 클래스의 포인터로 카르키는것이다.
+protected
+protected로 지정된 멤버는 파생 클래스만 접근을 허용한다.
+
+오류찾기
+#include <iostream>
+using namespace std;
+class Base {
+int a;
+protected:
+void setA(int a) { this->a = a; }
+public:
+void showA() { cout << a; }
+};
+class Derived : private Base {
+int b;
+protected:
+void setB(int b) { this->b = b; }
+public:
+void showB() { cout << b; }
+};
+int main() {
+Derived x;
+x.a = 5; // (1)
+x.setA(10); // (2)
+x.showA(); // (3)
+x.b = 10; // (4)
+x.setB(10); // (5)
+x.showB(); // (6)
+} 
+
+(1).x.a = 5는 a가 Base 클래스의 private이기 때문에 Base만 접근가능
+(2).x.setA(10)은 setA가 Base 클래스의 protected이며 Derived 클래스가 private 상속을 받았기 때문에 Derived 클래스만 접근가능
+(3).x.showA()는 Base 클래스의 private이기 때문에 Base만 접근가능
+(4).x.b = 10는 b가 Derived 클래스의 private이기 때문에 클래스 외부에서 접근할 수 없다.
+(5).x.setB(10)은 setB가 Derived 클래스의 protected이며 Derived 클래스가 private 상속을 받았기 때문에 Derived 클래스 외에는 접근할 수 없다.
+
